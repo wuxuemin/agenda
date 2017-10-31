@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"agendaservice"
 	"fmt"
 	"os"
+	"service"
 
 	"github.com/spf13/cobra"
 )
@@ -16,7 +16,7 @@ var logincommand = &cobra.Command{
 		username, _ := cmd.Flags().GetString("username")
 		password, _ := cmd.Flags().GetString("password")
 		var err error
-		err = agendaservice.Login(username, password)
+		err = service.Login(username, password)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Error:", err)
 		} else {

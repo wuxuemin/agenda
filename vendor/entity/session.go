@@ -29,7 +29,7 @@ func (model *sessionModel) Init(path string) {
 	model.path = path
 	model.session = &Session{}
 
-	model.load()
+	model.read()
 	logger.Println("[sessionmodel] initialized")
 }
 
@@ -37,7 +37,7 @@ func (model *sessionModel) Init(path string) {
 func (model *sessionModel) SetCurUser(user *User) {
 	logger.Printf("[sessionmodel] try setting user '%s' to current session\n", user.Username)
 	model.session.Username = user.Username
-	model.dump()
+	model.write()
 	logger.Printf("[sessionmodel] set user '%s' to current session\n", user.Username)
 }
 
@@ -46,14 +46,14 @@ func (model *sessionModel) GetCurUser() string {
 	return model.session.Username
 }
 
-func (model *sessionModel) load() {
+func (model *sessionModel) read() {
 	var sessionDb sessionDb
-	model.storage.load(&sessionDb)
+	model.storage.read(&sessionDb)
 	model.session = &sessionDb.CurUser
 }
 
-func (model *sessionModel) dump() {
+func (model *sessionModel) write() {
 	var sessionDb sessionDb
 	sessionDb.CurUser = *model.session
-	model.storage.dump(&sessionDb)
+	model.storage.write(&sessionDb)
 }

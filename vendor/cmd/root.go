@@ -33,8 +33,8 @@ var (
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "agenda",
-	Short: "Agenda implemented in golang",
-	Long:  `Agenda implemented in golang`,
+	Short: "welcome to Agenda",
+	Long:  `welcome to Agenda`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
@@ -59,15 +59,6 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.agenda-go.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	// RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -79,7 +70,7 @@ func initConfig() {
 		// Find home directory.
 		home, err := homedir.Dir()
 		if err != nil {
-			logger.Fatalln("Failed to find home directory", errors.Wrap(err, 0))
+			logger.Fatalln("Failed to find directory", errors.Wrap(err, 0))
 		}
 
 		// Search config in home directory with name ".agenda-go" (without extension).
@@ -94,9 +85,9 @@ func initConfig() {
 	err = viper.ReadInConfig()
 
 	// set current working directory
-	cwd := viper.GetString("cwd")
-	if len(cwd) > 0 {
-		err = os.Chdir(cwd)
+	c := viper.GetString("c")
+	if len(c) > 0 {
+		err = os.Chdir(c)
 		if err != nil {
 			logger.Fatalf("Failed to change current working directory: %v", err)
 		}

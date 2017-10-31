@@ -13,7 +13,7 @@ var (
 	output  io.WriteCloser
 )
 
-// NewLogger returns a new logger with some default settings
+// NewLogger default settings
 func NewLogger() *log.Logger {
 	logger := log.New(os.Stderr, "", log.Ldate|log.Ltime|log.Lmicroseconds|log.Lshortfile)
 	loggers = append(loggers, logger)

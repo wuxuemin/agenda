@@ -1,16 +1,16 @@
 package entity
 
 import (
-	"os"
 	"utils"
+	"os"
 
 	"github.com/spf13/viper"
 )
 
 type model interface {
 	Init(string)
-	load()
-	dump()
+	read()
+	write()
 }
 
 type modelconfig struct {
@@ -30,11 +30,10 @@ func addModel(model model, filename string) {
 	})
 }
 
-// Init initializes registered models
+// Init initialize
 func Init() {
 	var err interface{}
 	finished := make(chan bool)
-	// initialize all models concurrently
 	for _, m := range models {
 		go func(m modelconfig) {
 			defer func() {
@@ -51,7 +50,6 @@ func Init() {
 			m.model.Init(path)
 		}(m)
 	}
-	// wait for all models to finish initialization
 	for _ = range models {
 		<-finished
 	}

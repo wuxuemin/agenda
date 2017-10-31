@@ -2,10 +2,10 @@ package entity
 
 // User model for one user
 type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Email    string `json:"email"`
-	Phone    string `json:"phone"`
+	Username  string `json:"username"`
+	Password  string `json:"password"`
+	Email     string `json:"email"`
+	Telephone string `json:"telephone"`
 }
 
 type userDb struct {
@@ -32,22 +32,20 @@ func (model *userModel) Init(path string) {
 	model.path = path
 	model.users = make(map[string]*User)
 
-	model.load()
+	model.read()
 	logger.Println("[usermodel] initialized")
 }
 
-// AddUser add a new user to database
 func (model *userModel) AddUser(user *User) {
 	logger.Println("[usermodel] try adding new user", user.Username)
 	model.users[user.Username] = user
-	model.dump()
+	model.write()
 	logger.Println("[usermodel] added new user", user.Username)
 }
 
-// FindUserCondition filter function to query user
+// FindUserCondition type definition
 type FindUserCondition func(*User) bool
 
-// FindBy find userList with provided condition
 func (model *userModel) FindBy(condition FindUserCondition) []User {
 	result := []User{}
 	for _, user := range model.users {
@@ -58,23 +56,22 @@ func (model *userModel) FindBy(condition FindUserCondition) []User {
 	return result
 }
 
-// FindByUsername find user by username
 func (model *userModel) FindByUsername(username string) *User {
 	return model.users[username]
 }
 
-func (model *userModel) load() {
+func (model *userModel) read() {
 	var userDb userDb
-	model.storage.load(&userDb)
+	model.storage.read(&userDb)
 	for _, user := range userDb.Data {
 		model.users[user.Username] = &user
 	}
 }
 
-func (model *userModel) dump() {
+func (model *userModel) write() {
 	var userDb userDb
 	for _, user := range model.users {
 		userDb.Data = append(userDb.Data, *user)
 	}
-	model.storage.dump(&userDb)
+	model.storage.write(&userDb)
 }
